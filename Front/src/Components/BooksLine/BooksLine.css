@@ -1,0 +1,9 @@
+.books-line-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 90%;
+  }
+
+  
