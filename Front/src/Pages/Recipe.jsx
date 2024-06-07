@@ -9,9 +9,11 @@ export const Recipe = () => {
     return (
         <div>
             <Header />
-            <ImageContent image="img/header-background.png"/>
-            <AIPart />
+            {/* <ImageContent image="img/header-background.jpg"/> */}
+            
             <RecipeCards />
+
+            
             <Footer />
         </div>
     )

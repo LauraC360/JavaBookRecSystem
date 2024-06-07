@@ -92,6 +92,16 @@ body.active-modal {
     display: block;
     border-radius: 17px; /* Add round corners */
 }
+
+.small-info-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+
+
 .text-box-container {
     width: 100%;
     display: flex;

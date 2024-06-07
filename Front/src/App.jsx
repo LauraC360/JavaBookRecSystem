@@ -26,17 +26,7 @@ export function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/addhousehold" element={<AddHousehold />} />
-          <Route path="/codeemail" element={<CodeEmailPage />} />
-          <Route path="/preferences" element={<PreferencesAndAllergens />} />
-          <Route path="/household" element={<Household />} />
-          <Route path="/household-manage" element={<HouseholdManage />} />
-          <Route path="/chores" element={<ChoreListPage />} />
-          <Route path="/inventory" element={<InvetoryListPage />} />
           <Route path="/shopping-list" element={<ShoppingListPage />} />
-          <Route path="/shopping" element={<Shopping />} />
-          <Route path="/efficient-route" element={<EfficientRoute />} />
           <Route path="/recipe" element={<Recipe />} />
           <Route path="/menu" element={<Menu />} />
         </Routes>  

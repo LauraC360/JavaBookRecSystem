@@ -25,16 +25,14 @@ nav img
 
 nav ul
 {
+    margin-top: 5px ;
     list-style-type: none;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.homeChores
-{
-    margin-top: 10px;
-}
+
 .homeChores>a
 {
     color:#1BBC9B;

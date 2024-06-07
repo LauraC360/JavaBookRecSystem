@@ -10,7 +10,7 @@ function RecipeCards() {
   const [currentPage, setCurrentPage] = useState(0); // Java page starts from 0
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => {//TODO
       try {
         const response = await fetch('http://localhost:9091/api/v1/recipes/recipePage?pageNo=' + currentPage);
         if (!response.ok) {
@@ -28,7 +28,7 @@ function RecipeCards() {
     fetchData();
   }, [currentPage]);
 
-  const handleLike = async (recipeId) => {
+  const handleLike = async (recipeId) => {//TODO
     try {
       const userId = 1; // Replace with actual user ID
       const response = await fetch(`http://localhost:9091/api/v1/recipes/addLike?recipeId=${recipeId}&userId=${userId}`, {
@@ -63,10 +63,10 @@ function RecipeCards() {
   return (
     <>
       <div className='cards-container'>
-        {data ? data.map((recipe) => (
+        {data ? data.map((book) => (
           <Cards 
-            key={recipe.recipeId} 
-            recipe={recipe} 
+            key={book.id} 
+            recipe={book} 
             handleLike={handleLike} 
             handleDislike={handleDislike} 
           />

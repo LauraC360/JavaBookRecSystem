@@ -17,9 +17,10 @@ export const Header = () => {
             <a href="#"><img src="img/ico/Logo.png" alt="logo" /></a>
             <ul>
                 <li className="homeChores"><Link to="/">Home</Link></li>
-                <li className="aboutChores"><a href="#">Recommendation</a></li>
-                <li className="contactChores"><a href="#">Browse</a></li>
-                <li className='aboutChores'><a href='#'>My lists</a></li> 
+                <li className="aboutChores"><Link to="/">Recommandations</Link></li>
+                <li className="contactChores">  <Link to="/recipe">Browse</Link> </li>
+                <li className='aboutChores'><Link to='/shopping-list'>My lists</Link></li> 
+                <li className='contactChores'><Button text={"Account"}/></li>
             </ul>                
         </nav>
     )

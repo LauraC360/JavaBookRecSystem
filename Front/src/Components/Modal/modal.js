@@ -1,53 +1,50 @@
 import React, {useEffect, useState} from "react";
 import "./modal.css";
-import {fetchImage} from '../../pexelsApi.tsx';
 
-export default function Modal({ recipe, toggleModal, img }) {
-    console.log('Modal rendered with recipe:', recipe);
-    const [imageSrc, setImageSrc] = useState(null);
-    useEffect(() => {
-        if(recipe)
-            if(img) setImageSrc(img);
-            else if (recipe && recipe.imageList && recipe.imageList.length > 0) {
-            setImageSrc(recipe.imageList[0]);
-            } else {
-            fetchImage(recipe.recipeTitle.includes("recipe") ? recipe.recipeTitle : recipe.recipeTitle + ' recipe')
-                .then((url) => {
-                setImageSrc(url);
-                });
-            }
-      }, []);
+export default function Modal({ book, toggleModal, img }) {
+    console.log('Modal rendered with book:', book);
+    
 
-    //console.log(recipe.imageList);//its ok
-    //const imageSrc = (recipe.imageList && recipe.imageList.length > 0) ? recipe.imageList[0] : titleImage;
-    console.log(recipe.instructionsList);
+    //console.log(book.imageList);//its ok
+    //const imageSrc = (book.imageList && book.imageList.length > 0) ? book.imageList[0] : titleImage;
+    //console.log(book.instructionsList);
     
     return (
         <div className="modal">
             <div onClick={toggleModal} className="overlay"></div>
             <div className="modal-content">
-                <h2>{recipe.recipeTitle}</h2>
+                <h2>{book && book.bookTitle}</h2>
                 
-                <div className=".modal-title-image-container"><img src={imageSrc} alt="Title Image" className="modal-title-image" /> </div>
+                <div className=".modal-title-image-container"><img src={img} alt="Title Image" className="modal-title-image" /> </div>
+
+                <div className="small-info-container">
+                    <div className="small-info-left">
+                        <h5>Author: </h5>
+                        <p>{book && book.author}</p>
+                    </div>
+                    <div className="small-info-center">
+                        <h5>Rating: </h5>
+                        <p>{book && book.rating}</p>
+                    </div>
+                    <div className="small-info-right">
+                    {/* add rating module here */}
+                    </div>
+                </div>
+
+
                 <div className="text-box-container">
                     <div className="text-box-left">
-                    <h3>INGREDIENTS</h3>
+                    <h3>GENRES</h3>
                     <ul>
-                        { recipe.printableIngredients.map( ingredient => <li>{ingredient.replace(/"/g, '')}</li>) }
+                        { book && book.genres && book.genres.length > 0 ? book.genres.map((genre, index) => <li key={index}>{genre}</li>) : null }
                     </ul>
                     </div>
                     
                      {/* Add your left text box here */}
                     <div className="text-box-right">
-                    <h3>PREPARATION METHOD</h3>
+                    <h3>DESCRIPTION</h3>
                     <div className="text-box-right">
-                        {recipe.instructionsList && Object.keys(recipe.instructionsList).length > 0 ? (
-                            <ol>
-                            {Object.values(recipe.instructionsList).map(instruction => <li key={instruction}>{instruction}</li>)}
-                            </ol>
-                        ) : (
-                            <p>{recipe.description}</p>
-                        )}
+                        { book && book.description}
                     </div>
                 </div>
                 <button className="close-modal" onClick={toggleModal}>

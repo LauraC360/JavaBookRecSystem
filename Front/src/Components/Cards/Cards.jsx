@@ -23,7 +23,7 @@ function Cards({ book, handleLike, handleDislike }) {
     setLiked(!liked);
   };
 
-  // useEffect(() => {
+  // useEffect(() => {//get fetch image from goodreads
   //   if (recipe.imageList && recipe.imageList.length > 0) {
   //     setImageSrc(recipe.imageList[0]);
   //   } else {
@@ -52,7 +52,7 @@ function Cards({ book, handleLike, handleDislike }) {
           {liked ? 'Liked' : 'Like'}
         </button>
       </div>
-      {modalOpen && <Modal recipe={''} toggleModal={toggleModal} img={''} />}
+      {modalOpen && <Modal book={book} toggleModal={toggleModal} img={imageSrc} />}
     </div>
   );
 }
