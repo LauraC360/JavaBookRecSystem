@@ -4,7 +4,8 @@ import Cards from '../Cards/Cards';
 import PageButtons from '../PageButtons/pageButtons';
 import "./RecipeCards.css";
 
-function RecipeCards() {
+function RecipeCards(eliminatePagination) {
+  console.log('eliminatePagination:', eliminatePagination.eliminatePagination);
   const [data, setData] = useState(null);
   const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(0); // Java page starts from 0
@@ -12,6 +13,21 @@ function RecipeCards() {
   useEffect(() => {
     const fetchData = async () => {//TODO
       try {
+        const logResp = await fetch('http://localhost:3000/login',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: 'admin',
+              password: 'admin',
+            }),
+      });
+        console.log('logResp:', logResp);
+
+
+
         const response = await fetch('http://localhost:9091/api/v1/recipes/recipePage?pageNo=' + currentPage);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -73,11 +89,11 @@ function RecipeCards() {
         )) : <div>Loading...</div>}
       </div>
       
-      <PageButtons 
+      {eliminatePagination && eliminatePagination.eliminatePagination === false ? <PageButtons 
         pages={pages} 
         setCurrentPage={setCurrentPage} 
         currentPage={currentPage}
-      />
+      /> : null}
     </>
   );
 }

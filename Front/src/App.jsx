@@ -26,9 +26,9 @@ export function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/shopping-list" element={<ShoppingListPage />} />
-          <Route path="/recipe" element={<Recipe />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/my-lists" element={<ShoppingListPage />} />
+          <Route path="/browse" element={<Recipe eliminatePagination={false}/>} />
+          <Route path="/recommendations" element={<Recipe eliminatePagination={true} />} />
         </Routes>  
       </Router>    
     </HouseholdProvider>
