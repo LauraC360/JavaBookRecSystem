@@ -52,6 +52,19 @@ public class BookController {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 
+//    // TODO PUT REQUEST : review book
+//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+//    @PutMapping(value="/reviewBook/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Book> reviewBook(@PathVariable Long id, @RequestBody Book newBook) {
+//        Book book = bookRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+//        book.setAvgRating(newBook.getAvgRating());
+//        book.setNumRatings(newBook.getNumRatings());
+//        Book updatedBook = bookRepository.save(book);
+//        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+//    }
+
+
     // Add a new book - POST request
     // Add a new book - POST request
 //    @PostMapping("/addBook")
@@ -80,15 +93,14 @@ public class BookController {
 //        return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
 //    }
 
-
-    /// ADD A NEW BOOK
-    /// TODO test this
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @PostMapping(value="/addBook", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Book addBook(@RequestBody Book newBook) {
-        System.out.println(newBook.toString());
-        return bookRepository.save(newBook);
-    }
+//
+//    /// ADD A NEW BOOK
+//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+//    @PostMapping(value="/addBook", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Book addBook(@RequestBody Book newBook) {
+//        System.out.println(newBook.toString());
+//        return bookRepository.save(newBook);
+//    }
 
 
 //    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
@@ -98,33 +110,33 @@ public class BookController {
 //        return recipeRepository.save(newRecipe);
 //    }
 
-    // TODO test this
-    // Modify title for an existing book - PUT request
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @PutMapping(value="/updateBookName/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> updateBookName(@PathVariable Long id, @RequestBody String newName) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        book.setTitle(newName);
-        Book updatedBook = bookRepository.save(book);
-        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
-    }
+
+//    // Modify title for an existing book - PUT request
+//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+//    @PutMapping(value="/updateBookName/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Book> updateBookName(@PathVariable Long id, @RequestBody String newName) {
+//        Book book = bookRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+//        book.setTitle(newName);
+//        Book updatedBook = bookRepository.save(book);
+//        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+//    }
 
 
     // Delete a book - DELETE request
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @DeleteMapping("/deleteBook/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-
-        // Remove associations
-        book.setAuthor(null);
-        bookRepository.save(book);  // Save the book without the associations
-
-        bookRepository.delete(book);  // Now you can delete the book
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+//    @DeleteMapping("/deleteBook/{id}")
+//    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+//        Book book = bookRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+//
+//        // Remove associations
+//        book.setAuthor(null);
+//        bookRepository.save(book);  // Save the book without the associations
+//
+//        bookRepository.delete(book);  // Now you can delete the book
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
 
 //

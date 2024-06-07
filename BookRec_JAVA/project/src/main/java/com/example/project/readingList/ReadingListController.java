@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.authentication.user.UserRepository;
 
 @RestController
-@RequestMapping("/api/reading-lists")
+@RequestMapping("/api/v1/reading-lists")
 @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
 public class ReadingListController {
 
