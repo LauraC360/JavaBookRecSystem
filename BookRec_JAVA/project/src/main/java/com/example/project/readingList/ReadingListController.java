@@ -34,10 +34,8 @@ public class ReadingListController {
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReadingList> createReadingList(@RequestBody ReadingList readingList) {
         // authorize the user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        User currentUser = userRepository.findByUsername(currentUsername);
+        // use user 2
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
 
         // if there is a list with the same currentUser and the same name, dont create it
         if (readingListRepository.findByUserAndName(currentUser, readingList.getName()) != null) {
@@ -59,11 +57,8 @@ public class ReadingListController {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
 
-        // authorize the user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        User currentUser = userRepository.findByUsername(currentUsername);
+        // use user 2
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
 
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
@@ -87,11 +82,8 @@ public class ReadingListController {
         ReadingList readingList = readingListRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found with id " + id));
 
-        // authorize the user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        User currentUser = userRepository.findByUsername(currentUsername);
+        // use user 2
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
 
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
@@ -107,11 +99,9 @@ public class ReadingListController {
         ReadingList readingList = readingListRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found with id " + id));
 
-        // authorize the user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
 
-        User currentUser = userRepository.findByUsername(currentUsername);
+        // use user 2
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
 
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
@@ -119,5 +109,14 @@ public class ReadingListController {
 
         readingListRepository.delete(readingList);
         return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @GetMapping(value = "/get-all-reading-lists", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Iterable<ReadingList>> getAllReadingLists() {
+        // use user 2
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
+        Iterable<ReadingList> readingLists = readingListRepository.findByUser(currentUser);
+        return ResponseEntity.ok(readingLists);
     }
 }
