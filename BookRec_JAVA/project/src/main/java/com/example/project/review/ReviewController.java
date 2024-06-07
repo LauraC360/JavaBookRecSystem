@@ -57,6 +57,20 @@ public class ReviewController {
         return ResponseEntity.ok(savedReview);
     }
 
+    // UPDATE REVIEW
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @PutMapping("update-review/{id}")
+    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {
+        return reviewRepository.findById(id)
+                .map(review -> {
+                    review.setRating(reviewUpdate.getRating());
+                    review.setUser(reviewUpdate.getUser());
+                    review.setBook(reviewUpdate.getBook());
+                    Review updatedReview = reviewRepository.save(review);
+                    return ResponseEntity.ok().body(updatedReview);
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
 //
 //    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
 //    @PutMapping("update-review/{id}")
