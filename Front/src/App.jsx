@@ -15,6 +15,7 @@ import { EfficientRoute } from './Pages/EfficientRoute.jsx';
 import { Recipe } from './Pages/Recipe.jsx';
 import { Menu } from './Pages/Menu.jsx';
 import './App.css';
+import { MyLists } from './Pages/MyLists';
 
 export function App() {
   return (
@@ -24,7 +25,7 @@ export function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          {/* <Route path="/my-lists" element={} /> */}
+          <Route path="/my-lists" element={<MyLists/>} />
           <Route path="/browse" element={<Recipe eliminatePagination={false}/>} />
           <Route path="/recommendations" element={<Recipe eliminatePagination={true} />} />
         </Routes>  

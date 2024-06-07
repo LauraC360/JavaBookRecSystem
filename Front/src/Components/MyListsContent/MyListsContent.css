@@ -1,0 +1,33 @@
+/* MyListsContent.css */
+.spinner-container {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Aligns items along the start line */
+  height: auto; /* Adjust as needed */
+}
+
+
+.book-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .book-cards .Card {
+    flex: 0 0 calc(33.33% - 20px);
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 800px) {
+    .book-cards .Card {
+      flex: 0 0 calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .book-cards .Card {
+      flex: 0 0 100%;
+    }
+  }
