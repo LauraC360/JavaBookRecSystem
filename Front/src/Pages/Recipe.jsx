@@ -4,14 +4,13 @@ import { Footer } from "../Components/Footer/Footer";
 import { Header } from "../Components/Header/Header";
 import { ImageContent } from "../Components/ImageContent/ImageContent";
 
-export const Recipe = (eliminatePagination) => {
+export const Recipe = () => {
 
     return (
         <div>
             <Header />
             {/* <ImageContent image="img/header-background.jpg"/> */}
-            
-            <RecipeCards eliminatePagination={eliminatePagination.eliminatePagination}/> 
+             <RecipeCards />
 
             
             <Footer />

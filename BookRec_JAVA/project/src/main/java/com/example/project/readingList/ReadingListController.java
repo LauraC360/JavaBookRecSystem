@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.project.authentication.user.UserRepository;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/reading-lists")
 @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
@@ -113,10 +115,9 @@ public class ReadingListController {
 
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
     @GetMapping(value = "/get-all-reading-lists", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<ReadingList>> getAllReadingLists() {
+    public List<ReadingList> getAllReadingLists() {
         // use user 2
         User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
-        Iterable<ReadingList> readingLists = readingListRepository.findByUser(currentUser);
-        return ResponseEntity.ok(readingLists);
+        return readingListRepository.findByUser(currentUser);
     }
 }

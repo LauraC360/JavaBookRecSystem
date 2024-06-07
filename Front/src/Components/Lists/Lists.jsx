@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import './Lists.css';
 
-const Lists = ({ currentList, setCurrentList }) => {
+const Lists = ({  currentList, setListObj }) => {
   const [lists, setLists] = useState([]);
 
   // Fetch lists when component mounts
   useEffect(() => {
     const fetchLists = async () => {
         var data = null;
-        try{const response = await fetch('https://localhost:3000/lists');
-        data = await response.json();}
+        try{const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get-all-reading-lists`);
+          console.log(response);
+        data = await response.json();
+          console.log(data);
+      }
         catch (error) {
             console.error('Error fetching lists:', error);
         }
 
-        if(!data || !data.lists) {
+        if(!data) {
             console.error('Invalid data received:', data);
             return [];
         }
-        return data.lists;
+        return data;
     };
 
 
@@ -29,7 +32,15 @@ const Lists = ({ currentList, setCurrentList }) => {
   }, []);
 
   const handleListChange = (event) => {
-    setCurrentList(event.target.value);
+    
+    console.log('event.target.value',event.target.value);
+
+    for(var i=0;i<lists.length;i++){
+      if(lists[i].id==event.target.value){
+        console.log('curent list obj',lists[i]);
+        setListObj(lists[i]);
+      }
+    }
   };
 
   return (

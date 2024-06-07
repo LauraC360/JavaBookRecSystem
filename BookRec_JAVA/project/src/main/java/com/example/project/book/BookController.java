@@ -72,6 +72,17 @@ public class BookController {
         return bookRepository.getTotalBooks();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/getBooksByGenre/{page}/{genre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBooksByGenre(@PathVariable int page, @PathVariable String genre) {
+        String booksJson = bookRepository.getBooksByGenre(page, genre);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
 
     /// COMMMENTTT
 

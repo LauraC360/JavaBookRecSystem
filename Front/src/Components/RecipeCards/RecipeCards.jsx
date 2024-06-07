@@ -4,7 +4,7 @@ import Cards from '../Cards/Cards';
 import PageButtons from '../PageButtons/pageButtons';
 import "./RecipeCards.css";
 
-function RecipeCards(eliminatePagination) {
+function RecipeCards(rec) {
   //console.log('eliminatePagination:', eliminatePagination.eliminatePagination);
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(1);
@@ -14,12 +14,15 @@ function RecipeCards(eliminatePagination) {
 
     const fetchData = async () => {
       try {
+        var api = `http://localhost:8082/api/v1/books/getBookPage/${currentPage}`;
+        if(rec !== undefined && rec.rec === true) 
+          api = `http://localhost:8082/api/v1/books/getBooksByGenre/${currentPage}/Fantasy`;
         
-
+        console.log('api:', api);
 
         // console.log('currentPage:', currentPage);
         // console.log('fetching data...', `http://localhost:8082/api/v1/books/getBookPage/${currentPage}`);
-        const response = await fetch(`http://localhost:8082/api/v1/books/getBookPage/${currentPage}`);
+        const response = await fetch(api);
         if (!response.ok) {
           console.error('response:', response);
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -100,12 +103,12 @@ function RecipeCards(eliminatePagination) {
         )) : <div>Loading...</div>}
       </div>
       
-      { eliminatePagination && eliminatePagination.eliminatePagination === false ? 
+      
        <PageButtons 
         pages={pages} 
         setCurrentPage={setCurrentPage} 
         currentPage={currentPage}
-      /> : null}
+        />
     </>
   );
 }

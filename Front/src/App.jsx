@@ -16,6 +16,7 @@ import { Recipe } from './Pages/Recipe.jsx';
 import { Menu } from './Pages/Menu.jsx';
 import './App.css';
 import { MyLists } from './Pages/MyLists';
+import {Recc}  from './Components/Recc/Recc';
 
 export function App() {
   return (
@@ -26,8 +27,8 @@ export function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/my-lists" element={<MyLists/>} />
-          <Route path="/browse" element={<Recipe eliminatePagination={false}/>} />
-          <Route path="/recommendations" element={<Recipe eliminatePagination={true} />} />
+          <Route path="/browse" element={<Recipe  />} />
+          <Route path="/recommendations" element={<Recc />} />
         </Routes>  
       </Router>    
     </HouseholdProvider>

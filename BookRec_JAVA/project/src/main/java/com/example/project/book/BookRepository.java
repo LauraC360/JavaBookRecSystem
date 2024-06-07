@@ -25,4 +25,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = "SELECT * FROM get_total_pages()", nativeQuery = true)
     int getTotalBooks();
+
+    @Query(value = "SELECT * FROM get_recipes_genre(?1, ?2)", nativeQuery = true)
+    String getBooksByGenre(int page, String genre);
 }

@@ -24,7 +24,7 @@ export default function Modal({ book, toggleModal, img }) {
                     </div>
                     <div className="small-info-center">
                         <h5>Rating: </h5>
-                        <p>{book && book.rating}</p>
+                        <p>{book && book.avg_rating}</p>
                     </div>
                     <div className="small-info-right">
                     {/* add rating module here */}

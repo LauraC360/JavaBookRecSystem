@@ -5,10 +5,13 @@ import Modal from '../Modal/modal';
 import { fetchImage} from "../../pexelsApiFetch";
 
 
-function Cards({ book, handleLike, handleDislike }) {
+function Cards({ book, bookId, handleLike, handleDislike }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [liked, setLiked] = useState(false);
+  const [bookData, setBookData] = useState(null);
+
+
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
