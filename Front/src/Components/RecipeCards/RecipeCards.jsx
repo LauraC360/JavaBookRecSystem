@@ -13,15 +13,15 @@ function RecipeCards(eliminatePagination) {
   useEffect(() => {
     const fetchData = async () => {//TODO
       try {
-        const logResp = await fetch('http://localhost:3000/login',
+        const logResp = await fetch('http://localhost:3000/api/login',
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              username: 'admin',
-              password: 'admin',
+              username: 'testuser4',
+              password: 'password123',
             }),
       });
         console.log('logResp:', logResp);

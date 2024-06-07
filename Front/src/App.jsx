@@ -11,8 +11,6 @@ import { Household } from './Pages/Household';
 import { HouseholdManage } from './Pages/HouseholdManage';
 import ChoreListPage from './Pages/ChoreList';
 import InvetoryListPage from './Pages/InventoryList';
-import ShoppingListPage from './Pages/ShoppingList';
-import Shopping from './Components/Shopping/Shopping';
 import { EfficientRoute } from './Pages/EfficientRoute.jsx';
 import { Recipe } from './Pages/Recipe.jsx';
 import { Menu } from './Pages/Menu.jsx';
@@ -26,7 +24,7 @@ export function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/my-lists" element={<ShoppingListPage />} />
+          {/* <Route path="/my-lists" element={} /> */}
           <Route path="/browse" element={<Recipe eliminatePagination={false}/>} />
           <Route path="/recommendations" element={<Recipe eliminatePagination={true} />} />
         </Routes>  
