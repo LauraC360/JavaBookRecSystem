@@ -9,16 +9,14 @@ import { Footer } from '../Components/Footer/Footer';
 const ShoppingListPage: React.FC = () => {
   console.log('React version:', React.version, 'from', require.resolve('react'));
 
-  const API_URL = 'http://localhost:9091/shopping';
+  const API_URL = 'http://localhost:3000/';//api
 
   const [products, setProducts] = useState<ProductProps>({
     shoppingLists: [{ shoppingList: [], listName: '' }]
   });
-  const [newId, setNewId] = useState(0);
-  const [newProduct, setNewProduct] = useState('');
-  const [newQuantity, setNewQuantity] = useState(0);
-  const [fetchError, setFetchError] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<any>(null);
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -29,19 +27,12 @@ const ShoppingListPage: React.FC = () => {
         const listItems = await response.json();
 
         setProducts({
+          //TODO
           shoppingLists: listItems.shoppingLists.map((shoppingList: any) => ({
-            shoppingList: shoppingList.shoppingList,
-            listName: shoppingList.name
+            shoppingList: shoppingList.shoppingList,//reading list
+            listName: shoppingList.name//book id?
           }))
         });
-
-        setFetchError(null);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setFetchError(err.message);
-        } else {
-          setFetchError('An unknown error occurred');
-        }
       } finally {
         setLoading(false);
       }
@@ -70,7 +61,6 @@ const ShoppingListPage: React.FC = () => {
             setFetchError={setFetchError}
           />
         }
-        <Notifications />
       </main>
       <Footer />
     </div>
