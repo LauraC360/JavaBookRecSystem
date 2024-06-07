@@ -5,6 +5,7 @@ import com.example.project.author.AuthorRepository;
 import com.example.project.author.AuthorService;
 import com.example.project.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,26 @@ public class BookController {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
+
+
+    // Tested with Postman : http://localhost:8082/api/v1/books/getBookPage/1
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/getBookPage/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBooksForPage(@PathVariable int page) {
+        String booksJson = bookRepository.getBooksForPage(page);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/getTotalBookPages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public int getTotalBooks() {
+        return bookRepository.getTotalBooks();
+    }
+
 
     /// COMMMENTTT
 

@@ -44,9 +44,9 @@ function Cards({ book, handleLike, handleDislike }) {
 
   return (
     <div className="card">
-      <img src={imageSrc} alt={book.name} className="card-img" />
+      <img src={imageSrc} alt={book && book.title} className="card-img" />
       <div className="card-body">
-        <h5 className="card-title">{book.name}</h5>
+        <h5 className="card-title">{book&&book.title}</h5>
         <button className="btn btn-primary" onClick={toggleModal}>Details</button>
         <button className={`like-button ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
           {liked ? 'Liked' : 'Like'}

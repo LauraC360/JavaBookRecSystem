@@ -5,40 +5,49 @@ import PageButtons from '../PageButtons/pageButtons';
 import "./RecipeCards.css";
 
 function RecipeCards(eliminatePagination) {
-  console.log('eliminatePagination:', eliminatePagination.eliminatePagination);
-  const [data, setData] = useState(null);
+  //console.log('eliminatePagination:', eliminatePagination.eliminatePagination);
+  const [data, setData] = useState([]);
   const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(0); // Java page starts from 0
 
   useEffect(() => {
-    const fetchData = async () => {//TODO
+
+    const fetchData = async () => {
       try {
-        const logResp = await fetch('http://localhost:3000/api/login',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              username: 'testuser4',
-              password: 'password123',
-            }),
-      });
-        console.log('logResp:', logResp);
+        
 
 
-
-        const response = await fetch('http://localhost:9091/api/v1/recipes/recipePage?pageNo=' + currentPage);
+        // console.log('currentPage:', currentPage);
+        // console.log('fetching data...', `http://localhost:8082/api/v1/books/getBookPage/${currentPage}`);
+        const response = await fetch(`http://localhost:8082/api/v1/books/getBookPage/${currentPage}`);
         if (!response.ok) {
+          console.error('response:', response);
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const json = await response.json();
-        setData(Array.isArray(json.content) ? json.content : [json.content]);
+        console.log('Data:', json);
+        setData(json);
 
-        setPages(json.totalPages);
+
+        try{
+          const response = await fetch(`http://localhost:8082/api/v1/books/getTotalBookPages`);
+          if (!response.ok) {
+            // console.error('response:', response);
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const json = await response.json();
+          console.log('Data:', json);
+          setPages(json);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+
       } catch (error) {
         console.error('Error:', error);
       }
+      
+    console.log('currentPage:', currentPage);
+    console.log('all pages:', pages);
     };
 
     fetchData();
@@ -60,7 +69,7 @@ function RecipeCards(eliminatePagination) {
     }
   };
 
-  const handleDislike = async (recipeId) => {
+  const handleDislike = async (recipeId) => {//TODO
     try {
       const userId = 1; // Replace with actual user ID
       const response = await fetch(`http://localhost:9091/api/v1/recipes/removeLike?recipeId=${recipeId}&userId=${userId}`, {
@@ -80,16 +89,19 @@ function RecipeCards(eliminatePagination) {
     <>
       <div className='cards-container'>
         {data ? data.map((book) => (
+          // console.log('book:', book),
+          // console.log('book.id:', book.id),
           <Cards 
             key={book.id} 
-            recipe={book} 
+            book={book} 
             handleLike={handleLike} 
             handleDislike={handleDislike} 
           />
         )) : <div>Loading...</div>}
       </div>
       
-      {eliminatePagination && eliminatePagination.eliminatePagination === false ? <PageButtons 
+      { eliminatePagination && eliminatePagination.eliminatePagination === false ? 
+       <PageButtons 
         pages={pages} 
         setCurrentPage={setCurrentPage} 
         currentPage={currentPage}
