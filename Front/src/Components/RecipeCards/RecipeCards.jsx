@@ -31,7 +31,10 @@ function RecipeCards(rec) {
         console.log('Data:', json);
         setData(json);
 
-
+        if(rec !== undefined && rec.rec === true) {
+          setPages(27);
+          return;
+        }
         try{
           const response = await fetch(`http://localhost:8082/api/v1/books/getTotalBookPages`);
           if (!response.ok) {

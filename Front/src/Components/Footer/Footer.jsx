@@ -7,12 +7,12 @@ export const Footer = () =>
             <div className="footer-image"></div>
             <div className="footer-section">
                 <div className="footer-content">
-                    <p>Smart <br/>Household <br/>Management</p>
+                    <p>Front <br/>Books <br/></p>
                 </div>
                 <div className="footer-contact">
-                    <p>Contact</p>
-                    <p id="colored">info@household.com</p>
-                    <p id="number">+ 01 234 567 890</p>
+                   
+                    <p id="colored">Bindiu Ana-Mara and Chiriac Laura-Florina</p>
+                    <p id="number">Faculty of Computer Science Iasi</p>
                     <a><img src="img/ico/facebook.png" alt="facebook" /></a>
                     <a><img src="img/ico/twitter.png" alt="twitter" /></a>
                     <a><img src="img/ico/youtube.png" alt="youtube" /></a>
