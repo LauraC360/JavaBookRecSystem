@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override

@@ -11,7 +11,7 @@ import com.example.project.authentication.authority.AuthorityRepository;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api/v1/public")
 public class UserController {
 
     @Autowired

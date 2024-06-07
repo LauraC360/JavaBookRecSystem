@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/Home")
     public ResponseEntity<String> homePage() {
         return ResponseEntity.ok("Welcome to BookScroll App!");
