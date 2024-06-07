@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/// TODO CHANGE AUTHOR CONTROLLER TO MATCH THE PURPOSE OF APPLICATION
 @RestController
 @RequestMapping(path = "api/v1/authors")
 public class AuthorController {

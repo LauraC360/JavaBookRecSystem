@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+// TODO CHANGE BOOKS CONTROLLER TO MATCH THE PURPOSE OF APPLICATION
 @RestController
 @RequestMapping(path = "api/v1/books")
 public class BookController {
@@ -41,6 +43,13 @@ public class BookController {
     @GetMapping(value="/getAllBooks", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Book> getBooks() {
         return bookRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/getBook/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Book getBook(@PathVariable Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 
     // Add a new book - POST request
