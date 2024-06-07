@@ -4,7 +4,10 @@ import com.example.project.authentication.user.User;
 import com.example.project.authentication.user.UserRepository;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
+import com.example.project.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +28,25 @@ public class ReviewController {
     @Autowired
     private ReviewRepository reviewRepository;
 
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PostMapping(value = "/add-review/{bookId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Review> createReview(@PathVariable Long bookId, @RequestBody Review review, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String currentUsername = null;
-        if (session != null) {
-            currentUsername = (String) session.getAttribute("user");
-        }
+    // Tested with Postman (POST Request: http://localhost:8080/api/v1/reviews/add-review/1)
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @PostMapping(value = "/add-review/{bookId}/{rating}")
+    public ResponseEntity<Review> createReview(@PathVariable Long bookId, @PathVariable int rating) {
 
-        User currentUser = null;
-        if (currentUsername != null) {
-            currentUser = userRepository.findByUsername(currentUsername);
-        }
+
+        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
 
         if (currentUser == null) {
-            return ResponseEntity.status(401).body("Please log in first");
+            return ResponseEntity.status(401).body(null);
         }
 
         // Find the book by ID
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
+        Review review = new Review();
         // Set the user and book for the review
+
+        review.setRating(rating);
         review.setUser(currentUser);
         review.setBook(book);
 

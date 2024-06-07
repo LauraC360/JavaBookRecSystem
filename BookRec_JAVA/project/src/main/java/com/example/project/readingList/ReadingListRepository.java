@@ -8,4 +8,6 @@ public interface ReadingListRepository extends JpaRepository<ReadingList, Long> 
 
     // find user and name for a reading list
     ReadingList findByUserAndName(User user, String name);
+
+    Iterable<ReadingList> findByUser(User currentUser);
 }
