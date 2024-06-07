@@ -4,6 +4,7 @@ import com.example.project.authentication.user.User;
 import com.example.project.authentication.user.UserRepository;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,23 @@ public class ReviewController {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
     @PostMapping(value = "/add-review/{bookId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Review> createReview(@PathVariable Long bookId, @RequestBody Review review) {
-        // Get the authenticated user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        User currentUser = userRepository.findByUsername(currentUsername);
+    public ResponseEntity<Review> createReview(@PathVariable Long bookId, @RequestBody Review review, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String currentUsername = null;
+        if (session != null) {
+            currentUsername = (String) session.getAttribute("user");
+        }
+
+        User currentUser = null;
+        if (currentUsername != null) {
+            currentUser = userRepository.findByUsername(currentUsername);
+        }
+
+        if (currentUser == null) {
+            return ResponseEntity.status(401).body("Please log in first");
+        }
 
         // Find the book by ID
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
