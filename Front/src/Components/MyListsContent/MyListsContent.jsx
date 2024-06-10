@@ -1,74 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import './MyListsContent.css';
-import Lists from '../Lists/Lists';
-import PrepCards from '../PrepCards/PrepCards';
-
-export const MyListsContent = () => {
-  const [selectedList, setSelectedList] = useState(null);
-  const [books, setBooks] = useState([]);
-  const [setListObjCurr, setListObjCurrr] = useState(null);
+import { useEffect, useState } from "react";
+import MyListSpinner from "../MyListSpinner/MyListSpinner.jsx";
+import MyBookCards from "../MyBookCards/MyBookCards.jsx";
+import Cards from "../Cards/Cards.jsx";
+import "./MyListsContent.css";
 
 
-  const fetchBooks = async () => {
-    console.log('in fetch books,selectedList',selectedList);
-    if(!setListObjCurr) return;
-    console.log('valid list',setListObjCurr);
-    for (var i = 0; i < setListObjCurr.length; i++) {
-      try{const response = await fetch(`http://localhost:8082/api/v1/books/getBook/${setListObjCurr[i]}`);
-      console.log(response);
-      const data = await response.json();
-      setBooks(data);}
-      catch (error) {
-        console.error('Error fetching books:', error);
+
+
+
+const MyListsContent = () => {
+    const [allLists, setAllLists] = useState([]);
+    const [currentListId, setCurrentList] = useState(1);
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+
+    const handleList = (event) => {
+        setCurrentList(event.target.value);
     }
-  }}
 
-
-  // const handleListChange = (newList) => {
-  //   console.log('newlist',newList);
-  //   setSelectedList(newList);
-  //   setBooks(setListObjCurr || []);
-  //   fetchBooks();
-  // };
-
-
-
-  const setListObj = (listObj) => {
-    console.log('list obj',listObj);
-    setListObjCurrr(listObj);
-    setSelectedList(listObj.id);
-    setBooks(listObj.books);
-
-    let books = [];
-    const fetchBook = async (bookId) => {
-      if (bookId && bookId !== 'undefined') {
+    const fetchLists = async () => {
         try{
-          console.log('fetching book');
-        const data = await fetch(`http://localhost:8082/api/v1/books/getBook/${bookId}`);
-        const bookData = await data.json();
-        return bookData;
-      } catch (error) {
-        console.error('Error fetching book:', error);
-      }
-    }}
-  
-      for(var i=0;i<listObj.books.length;i++){
-        books[i] = fetchBook(listObj.books[i]);
-      }
+        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get-all-reading-lists`);
+        const data = await response.json();
+        setAllLists(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
-      setBooks(books);
-  }
 
-  
-  
+    const fetchBooks = async () => {
+        try{
+            console.log('all lists ', allLists);
+            console.log('current list id ', currentListId);
+        while(currentListId === undefined);
+        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get/${currentListId}`);
+        const data = await response.json();
+        console.log('current list data ', data);
+        
 
-  return (
-    <div>
-      <div className='spinner-container'><Lists  currentList={selectedList} setListObj={setListObj} /></div>
-      <div className="book-cards">
-        <PrepCards books={books} />
-       
-      </div>
-    </div>
-  );
+        let newBooks = [];
+        for(let i = 0; i < data.books.length; i++){
+            const response = await fetch(`http://localhost:8082/api/v1/books/getBook/${data.books[i]}`);
+            const bookData = await response.json();
+            newBooks.push(bookData);
+        }
+        setBooks(newBooks);
+        console.log(newBooks);
+        console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        setLoading(true);
+        fetchLists();
+        setLoading(false);
+    }, []);
+
+
+    useEffect(() => {
+        setLoading(true);
+        fetchBooks();
+        setLoading(false);
+    }, [currentListId]);
+
+
+    return (
+
+        <div className="my-list-container">
+            <MyListSpinner allLists={allLists} changeList={handleList} />
+        
+            <div className="my-cards-container">
+             {!loading && books &&  books.map(book => (<Cards key={book.id} book={book} />))}
+             {!loading && books && books.length === 0 && <h1>No books in this list</h1>}
+            </div>
+        </div>
+    )
 }
+
+
+export default MyListsContent;

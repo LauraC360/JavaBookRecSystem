@@ -1,13 +1,15 @@
 // src/components/Cards.jsx
 import React, { useState, useEffect } from 'react';
 import './Cards.css';
+import loadingGIF from '../loading.gif';
 import Modal from '../Modal/modal';
 import { fetchImage} from "../../pexelsApiFetch";
+import fetchGoodreadsImage from "../FetchGoodreadsImage/FetchGoodreadsImage";
 
 
 function Cards({ book, bookId, handleLike, handleDislike }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState(loadingGIF);
   const [liked, setLiked] = useState(false);
   const [bookData, setBookData] = useState(null);
 
@@ -38,6 +40,12 @@ function Cards({ book, bookId, handleLike, handleDislike }) {
   // }, [recipe]);
 
   useEffect(() => {
+    fetchGoodreadsImage(book)
+      .then((url) => {
+        setImageSrc(url);
+      });
+
+
     if (modalOpen) {
       document.body.classList.add('no-scroll');
     } else {
@@ -47,7 +55,7 @@ function Cards({ book, bookId, handleLike, handleDislike }) {
 
   return (
     <div className="card">
-      <img src={imageSrc} alt={book && book.title} className="card-img" />
+      <img src={imageSrc} alt={book && book.title} className="card-img" />       
       <div className="card-body">
         <h5 className="card-title">{book&&book.title}</h5>
         <button className="btn btn-primary" onClick={toggleModal}>Details</button>
