@@ -5,14 +5,8 @@ import com.example.project.authentication.user.UserRepository;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
 import com.example.project.exception.ResourceNotFoundException;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -57,7 +51,31 @@ public class ReviewController {
         return ResponseEntity.ok(savedReview);
     }
 
+
     // UPDATE REVIEW
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @PutMapping("update-review/{bookId}/{userId}")
+    public ResponseEntity<Review> updateReview(@PathVariable Long bookId, @PathVariable Long userId, @RequestBody Review reviewUpdate) {
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (currentUser == null) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        // use book repository
+        Book currentBook = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+
+        return reviewRepository.findById(reviewUpdate.getId())
+                .map(review -> {
+                    review.setRating(reviewUpdate.getRating());
+                    review.setUser(currentUser);
+                    review.setBook(currentBook);
+                    Review updatedReview = reviewRepository.save(review);
+                    return ResponseEntity.ok().body(updatedReview);
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
+
+
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
     @PutMapping("update-review/{id}")
     public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {

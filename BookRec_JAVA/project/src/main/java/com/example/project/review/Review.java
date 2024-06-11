@@ -2,9 +2,11 @@ package com.example.project.review;
 
 import com.example.project.book.Book;
 import com.example.project.authentication.user.User;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+
+import jakarta.persistence.*;
 
 @Getter
 @Setter

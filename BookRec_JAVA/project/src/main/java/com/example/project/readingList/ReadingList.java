@@ -2,10 +2,11 @@ package com.example.project.readingList;
 
 import com.example.project.authentication.user.User;
 import com.example.project.book.Book;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

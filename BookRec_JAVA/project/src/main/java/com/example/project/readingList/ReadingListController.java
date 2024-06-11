@@ -30,12 +30,33 @@ public class ReadingListController {
 
 
     // Tested with Postman (POST Request: http://localhost:8080/api/reading-lists/create)
+//    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+//    @PreAuthorize("isAuthenticated()")
+//    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<ReadingList> createReadingList(@RequestBody ReadingList readingList) {
+//        // authorize the user
+//        // use user 2
+//        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
+//
+//        // please find the current authenticated user Id
+//
+//
+//
+//        // if there is a list with the same currentUser and the same name, dont create it
+//        if (readingListRepository.findByUserAndName(currentUser, readingList.getName()) != null) {
+//            return ResponseEntity.status(409).build(); // Conflict
+//        }
+//        readingList.setUser(currentUser);
+//        ReadingList savedReadingList = readingListRepository.save(readingList);
+//        return ResponseEntity.ok(savedReadingList);
+//    }
+
+    // Tested with Postman (POST Request: http://localhost:8080/api/reading-lists/create)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReadingList> createReadingList(@RequestBody ReadingList readingList) {
-        // authorize the user
-        // use user 2
-        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
 
         // if there is a list with the same currentUser and the same name, dont create it
         if (readingListRepository.findByUserAndName(currentUser, readingList.getName()) != null) {
@@ -45,7 +66,6 @@ public class ReadingListController {
         ReadingList savedReadingList = readingListRepository.save(readingList);
         return ResponseEntity.ok(savedReadingList);
     }
-
 
     // Tested with Postman (PUT Request: http://localhost:8080/api/reading-lists/add-book/1/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app

@@ -1,7 +1,5 @@
 package com.example.project.author;
 
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

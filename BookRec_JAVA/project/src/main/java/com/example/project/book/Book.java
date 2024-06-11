@@ -2,11 +2,12 @@ package com.example.project.book;
 
 import com.example.project.author.Author;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 //import jdk.xml.internal.JdkXmlFeatures;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

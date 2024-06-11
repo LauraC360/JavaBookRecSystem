@@ -1,10 +1,11 @@
 package com.example.project.userPreferences;
 
 import com.example.project.authentication.user.User;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.Set;
 
