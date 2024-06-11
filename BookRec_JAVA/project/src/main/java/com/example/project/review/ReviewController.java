@@ -2,11 +2,18 @@ package com.example.project.review;
 
 import com.example.project.authentication.user.User;
 import com.example.project.authentication.user.UserRepository;
+import com.example.project.authentication.user.UserSession;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
 import com.example.project.exception.ResourceNotFoundException;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,22 +31,32 @@ public class ReviewController {
 
     // Tested with Postman (POST Request: http://localhost:8080/api/v1/reviews/add-review/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PostMapping(value = "/add-review/{bookId}/{rating}")
+    @PostMapping(value = "/{bookId}/{rating}")
     public ResponseEntity<Review> createReview(@PathVariable Long bookId, @PathVariable int rating) {
 
+        // use user
+        // use user
+        String username = UserSession.getInstance().getUsername();
 
-        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
+        // daca nu e logat, nu merge
+        if (username == null) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        // Find the user by username
+        User currentUser = userRepository.findByUsername(username);
 
         if (currentUser == null) {
             return ResponseEntity.status(401).body(null);
         }
 
         // Find the book by ID
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new RuntimeException("Book not found"));
 
         Review review = new Review();
-        // Set the user and book for the review
 
+        // Set the user and book for the review
         review.setRating(rating);
         review.setUser(currentUser);
         review.setBook(book);
@@ -49,44 +66,6 @@ public class ReviewController {
 
         // Return the saved review
         return ResponseEntity.ok(savedReview);
-    }
-
-
-    // UPDATE REVIEW
-    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PutMapping("update-review/{bookId}/{userId}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long bookId, @PathVariable Long userId, @RequestBody Review reviewUpdate) {
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if (currentUser == null) {
-            return ResponseEntity.status(401).body(null);
-        }
-
-        // use book repository
-        Book currentBook = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-
-        return reviewRepository.findById(reviewUpdate.getId())
-                .map(review -> {
-                    review.setRating(reviewUpdate.getRating());
-                    review.setUser(currentUser);
-                    review.setBook(currentBook);
-                    Review updatedReview = reviewRepository.save(review);
-                    return ResponseEntity.ok().body(updatedReview);
-                }).orElse(ResponseEntity.notFound().build());
-    }
-
-
-
-    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PutMapping("update-review/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {
-        return reviewRepository.findById(id)
-                .map(review -> {
-                    review.setRating(reviewUpdate.getRating());
-                    review.setUser(reviewUpdate.getUser());
-                    review.setBook(reviewUpdate.getBook());
-                    Review updatedReview = reviewRepository.save(review);
-                    return ResponseEntity.ok().body(updatedReview);
-                }).orElse(ResponseEntity.notFound().build());
     }
 
 //
@@ -104,7 +83,7 @@ public class ReviewController {
 //    }
 
 
-    //    @GetMapping("/{id}")
+    //@GetMapping("/review/{id}")
 //    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
 //        return reviewRepository.findById(id)
 //                .map(review -> ResponseEntity.ok().body(review))
