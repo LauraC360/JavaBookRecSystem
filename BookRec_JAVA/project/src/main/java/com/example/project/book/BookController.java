@@ -84,6 +84,32 @@ public class BookController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/mostPopular", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMostPopular(){
+        String booksJson =  bookRepository.getMostPopularBooks();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/someReadingList", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getSomeFromReadingLists(){
+        //todo add user
+
+        String booksJson =  bookRepository.getSomeBooksFromReadingList(2);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+
     /// COMMMENTTT
 
     // Add a new book - POST request

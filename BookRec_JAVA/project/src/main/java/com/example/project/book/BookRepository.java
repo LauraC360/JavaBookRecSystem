@@ -28,4 +28,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = "SELECT * FROM get_recipes_genre(?1, ?2)", nativeQuery = true)
     String getBooksByGenre(int page, String genre);
+
+    @Query(value = "SELECT get_top_rated_books()", nativeQuery = true)
+    String getMostPopularBooks();
+
+    @Query(value = "SELECT get_user_reading_list(?1)", nativeQuery = true)
+    String getSomeBooksFromReadingList(int user_id);
 }

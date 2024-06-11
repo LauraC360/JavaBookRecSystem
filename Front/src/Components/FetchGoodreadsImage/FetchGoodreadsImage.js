@@ -3,7 +3,7 @@ import cheerio from 'cheerio';
 
 async function fetchGoodreadsImage(book) {
     try {
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const proxyUrl = 'https://anacorsproxy-6498d32363f3.herokuapp.com/';
       const response = await axios.get(proxyUrl + book.url, {
         headers: {
           'X-Requested-With': 'XMLHttpRequest'

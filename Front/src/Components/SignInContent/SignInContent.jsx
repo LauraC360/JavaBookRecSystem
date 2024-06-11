@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './SignInContent.css';
+import React, { useState } from 'react'; 
+import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom'; 
+
 
 export const Content = () => 
 {
@@ -13,7 +15,7 @@ export const Content = () =>
         e.preventDefault();
         const user={email, password}
         console.log(user)
-        fetch("http://localhost:9091/login", {
+        fetch("http://localhost:8082/api/v1/public/v2/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ export const Content = () =>
             localStorage.setItem('jwtToken', data.token);
             console.log(data.token);
             console.log('User logged in successfully');
-            navigate('/account');
+            navigate('/');
         }).catch(error => {
             setErrorMessage(error.message);
         });

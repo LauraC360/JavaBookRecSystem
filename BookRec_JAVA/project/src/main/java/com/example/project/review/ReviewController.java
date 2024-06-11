@@ -43,6 +43,7 @@ public class ReviewController {
         // Find the book by ID
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
+
         Review review = new Review();
         // Set the user and book for the review
 
@@ -72,7 +73,7 @@ public class ReviewController {
 //    }
 
 
-    //    @GetMapping("/{id}")
+    //@GetMapping("/review/{id}")
 //    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
 //        return reviewRepository.findById(id)
 //                .map(review -> ResponseEntity.ok().body(review))

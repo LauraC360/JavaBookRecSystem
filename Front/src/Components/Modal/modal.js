@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import "./modal.css";
+import StarRating from "../StarRating/StarRating";
 
-export default function Modal({ book, toggleModal, img }) {
+export default function Modal({ book, toggleModal, img, startRating}) {
     console.log('Modal rendered with book:', book);
-    
+    const [rating, setRating] = useState(startRating);
+
 
     //console.log(book.imageList);//its ok
     //const imageSrc = (book.imageList && book.imageList.length > 0) ? book.imageList[0] : titleImage;
@@ -27,7 +29,7 @@ export default function Modal({ book, toggleModal, img }) {
                         <p>{book && book.avg_rating}</p>
                     </div>
                     <div className="small-info-right">
-                    {/* add rating module here */}
+                     <StarRating startRating={rating} />
                     </div>
                 </div>
 
