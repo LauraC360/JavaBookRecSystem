@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-function StarRating(  ) {
+function StarRating( bookId ) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
   const fetchRating = () => {
-    //todo fetch get
-    console.log('Rating fetched: 2<static>');
-    return 2;
+    //todo fetch rating from backend
+    return 0;
     }
 
   const saveRating = (input) => {
+    try{
+      console.log('BookId:', bookId.bookId);
+
+      const response= fetch(`http://localhost:8082/api/v1/reviews/${bookId.bookId}/${input}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+      }}
+      );
+      const data = response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+
     console.log('Rating:', input);
     setRating(input);
-    //todo fetch post
   }
 
     useEffect(() => {

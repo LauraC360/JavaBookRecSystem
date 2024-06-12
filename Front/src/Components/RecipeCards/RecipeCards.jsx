@@ -14,9 +14,9 @@ function RecipeCards(rec) {
 
     const fetchData = async () => {
       try {
-        var api = `http://localhost:8082/api/v1/books/getBookPage/${currentPage}`;
+        var api = `http://localhost:8082/api/v1/books/page/${currentPage}`;
         if(rec !== undefined && rec.rec === true) 
-          api = `http://localhost:8082/api/v1/books/getBooksByGenre/${currentPage}/Fantasy`;
+          api = `http://localhost:8082/api/v1/recommendations/recommended-books`;
         
         console.log('api:', api);
 
@@ -32,11 +32,11 @@ function RecipeCards(rec) {
         setData(json);
 
         if(rec !== undefined && rec.rec === true) {
-          setPages(27);
+          setPages(1);
           return;
         }
         try{
-          const response = await fetch(`http://localhost:8082/api/v1/books/getTotalBookPages`);
+          const response = await fetch(`http://localhost:8082/api/v1/books/total-book-pages`);
           if (!response.ok) {
             // console.error('response:', response);
             throw new Error(`HTTP error! status: ${response.status}`);

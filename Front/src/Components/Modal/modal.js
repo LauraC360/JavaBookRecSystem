@@ -70,7 +70,7 @@ export default function Modal({ book, toggleModal, img, startRating}) {
                         <p>{book && book.avg_rating}</p>
                     </div>
                     <div className="small-info-right">
-                     <StarRating startRating={rating} />
+                     <StarRating bookId={book.id} />
                     </div>
                 </div>
 

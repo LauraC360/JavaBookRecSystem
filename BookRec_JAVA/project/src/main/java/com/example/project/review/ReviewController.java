@@ -80,6 +80,47 @@ public class ReviewController {
         }
     }
 
+
+    // api for get review by book
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @GetMapping(value = "/{bookId}")
+    public ResponseEntity<Review> getReviewByBook(@PathVariable Long bookId) {
+        // Find the book by ID
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new RuntimeException("Book not found"));
+
+        // if the book is not found, return 404
+        if (book == null) {
+            return ResponseEntity.status(404).body(null);
+        }
+
+        // use user
+        String username = UserSession.getInstance().getUsername();
+
+        // daca nu e logat, nu merge
+        if (username == null) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        // Find the user by username
+        User currentUser = userRepository.findByUsername(username);
+
+        if (currentUser == null) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        // If there already is a review from this user
+        Review review = reviewRepository.findByUserAndBook(currentUser, book);
+        if (review != null) {
+            return ResponseEntity.ok(review);
+        }
+        else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
+
+
+
 //
 //    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
 //    @PutMapping("update-review/{id}")

@@ -59,7 +59,7 @@ public class BookController {
 
     // Tested with Postman : http://localhost:8082/api/v1/books/getBookPage/1
     @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/page/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getBooksForPage(@PathVariable int page) {
         String booksJson = bookRepository.getBooksForPage(page);
 

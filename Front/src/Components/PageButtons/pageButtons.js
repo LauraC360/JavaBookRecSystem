@@ -17,6 +17,7 @@ export default function PageButtons({ pages, setCurrentPage, currentPage }) {
         pageNumbers.push(currentPage + 1);
     }
 
+    if(pages > 1)
     pageNumbers.push(pages - 1);
 
 

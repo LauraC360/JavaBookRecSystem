@@ -12,9 +12,7 @@ export const Content = () => {
             <div className="content-line-div">
             <ContentLine type={'Popular'} /></div>
 
-            <div className="content-line-div">
-            <ContentLine type={'Some recommendations'} />
-            </div>
+            
 
             <div className="content-line-div">
             <ContentLine type={'My List'} />

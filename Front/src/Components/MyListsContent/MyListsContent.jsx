@@ -21,7 +21,7 @@ const MyListsContent = () => {
 
     const fetchLists = async () => {
         try{
-        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get-all-reading-lists`);
+        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/all-reading-lists`);
         const data = await response.json();
         setAllLists(data);
         } catch (error) {
@@ -35,14 +35,14 @@ const MyListsContent = () => {
             console.log('all lists ', allLists);
             console.log('current list id ', currentListId);
         while(currentListId === undefined);
-        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get/${currentListId}`);
+        const response = await fetch(`http://localhost:8082/api/v1/reading-lists/list/${currentListId}`);
         const data = await response.json();
         console.log('current list data ', data);
         
 
         let newBooks = [];
         for(let i = 0; i < data.books.length; i++){
-            const response = await fetch(`http://localhost:8082/api/v1/books/getBook/${data.books[i]}`);
+            const response = await fetch(`http://localhost:8082/api/v1/books/${data.books[i]}`);
             const bookData = await response.json();
             newBooks.push(bookData);
         }
