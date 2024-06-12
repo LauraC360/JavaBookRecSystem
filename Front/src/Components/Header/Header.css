@@ -22,7 +22,6 @@ nav
 nav img
 {
     width: 50%;
-    margin-left: 100px;
     margin-top: 20px
 }
 
@@ -32,7 +31,7 @@ nav ul
     list-style-type: none;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 
@@ -42,7 +41,7 @@ nav ul
 }
 
 li {
-    margin: 0 100px 0 100px;
+    margin: 0 30px;
 }
 
 a

@@ -22,6 +22,7 @@ export const Header = () => {
                 <li className="contactChores">  <Link to="/browse">Browse</Link> </li>
                 <li className='aboutChores'><Link to='/my-lists'>My lists</Link></li> 
                 <li className='contactChores'><Link to='/signin'><Button text={"Account"}/></Link></li>
+                <li className='contactChores'><Link to='/"'><Button text={"Sign out"}/></Link></li>
             </ul>                
         </nav>
     )

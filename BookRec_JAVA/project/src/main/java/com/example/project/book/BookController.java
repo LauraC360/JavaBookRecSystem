@@ -52,6 +52,81 @@ public class BookController {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 
+<<<<<<< Updated upstream
+=======
+
+    // Tested with Postman : http://localhost:8082/api/v1/books/getBookPage/1
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/page/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBooksForPage(@PathVariable int page) {
+        String booksJson = bookRepository.getBooksForPage(page);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/total-book-pages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public int getTotalBooks() {
+        return bookRepository.getTotalBooks();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @GetMapping(value="/{page}/{genre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBooksByGenre(@PathVariable int page, @PathVariable String genre) {
+        String booksJson = bookRepository.getBooksByGenre(page, genre);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/mostPopular", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMostPopular(){
+        String booksJson =  bookRepository.getMostPopularBooks();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value="/someReadingList", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getSomeFromReadingLists(){
+        // add user
+        // Retrieve the username from the UserSession
+        String username = UserSession.getInstance().getUsername();
+
+        // daca nu e logat, nu poate crea lista
+        if (username == null) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        // Find the user by username
+        User currentUser = userRepository.findByUsername(username);
+        if (currentUser == null) {
+            throw new ResourceNotFoundException("User not found with username " + username);
+        }
+
+        Long id = currentUser.getId();
+
+        String booksJson =  bookRepository.getSomeBooksFromReadingList(Math.toIntExact(id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
+    }
+
+
+>>>>>>> Stashed changes
     /// COMMMENTTT
 
     // Add a new book - POST request

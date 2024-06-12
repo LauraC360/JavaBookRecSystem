@@ -15,7 +15,7 @@ export const Content = () =>
         e.preventDefault();
         const user={username, password}
         console.log(user)   
-        fetch("http://localhost:8082/api/v1/public/v2/login", {
+        fetch("http://localhost:8082/api/v1/public/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
