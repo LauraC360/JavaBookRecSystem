@@ -1,17 +1,10 @@
 package com.example.project.book;
 
-import com.example.project.authentication.user.User;
-import com.example.project.authentication.user.UserController;
-import com.example.project.authentication.user.UserRepository;
-import com.example.project.authentication.user.UserSession;
 import com.example.project.author.Author;
 import com.example.project.author.AuthorRepository;
 import com.example.project.author.AuthorService;
 import com.example.project.exception.ResourceNotFoundException;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +15,6 @@ import java.util.List;
 
 // TODO CHANGE BOOKS CONTROLLER TO MATCH THE PURPOSE OF APPLICATION
 @RestController
-@AllArgsConstructor
 @RequestMapping(path = "api/v1/books")
 public class BookController {
     @Autowired
@@ -34,99 +26,31 @@ public class BookController {
     @Autowired
     private final AuthorRepository authorRepository;
 
-    @Autowired
-    private final UserSession userSession;
 
     @Autowired
-    private final UserRepository userRepository;
+    public BookController(BookService bookService,
+                          BookRepository bookRepository,
+                          AuthorRepository authorRepository) {
+        this.bookService = bookService;
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+    }
 
     // Get the list of books
     // TODO test this
     // Tested with Postman : http://localhost:8081/api/v1/books/getAllBooks
     @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/getAllBooks", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }
 
     @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/getBook/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Book getBook(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
-
-
-    // Tested with Postman : http://localhost:8082/api/v1/books/getBookPage/1
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getBooksForPage(@PathVariable int page) {
-        String booksJson = bookRepository.getBooksForPage(page);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-
-        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/total-book-pages", produces = MediaType.APPLICATION_JSON_VALUE)
-    public int getTotalBooks() {
-        return bookRepository.getTotalBooks();
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-    @GetMapping(value="/{page}/{genre}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getBooksByGenre(@PathVariable int page, @PathVariable String genre) {
-        String booksJson = bookRepository.getBooksByGenre(page, genre);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-
-        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
-    }
-
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value="/mostPopular", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getMostPopular(){
-        String booksJson =  bookRepository.getMostPopularBooks();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-
-        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
-    }
-
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value="/someReadingList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getSomeFromReadingLists(){
-        // add user
-        // Retrieve the username from the UserSession
-        String username = UserSession.getInstance().getUsername();
-
-        // daca nu e logat, nu poate crea lista
-        if (username == null) {
-            return ResponseEntity.status(403).build(); // Forbidden
-        }
-
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found with username " + username);
-        }
-
-        Long id = currentUser.getId();
-
-        String booksJson =  bookRepository.getSomeBooksFromReadingList(Math.toIntExact(id));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-
-        return new ResponseEntity<>(booksJson, headers, HttpStatus.OK);
-    }
-
 
     /// COMMMENTTT
 
@@ -159,14 +83,14 @@ public class BookController {
 //    }
 
 
-//    /// ADD A NEW BOOK
-//    /// TODO test this
-//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-//    @PostMapping(value="/new-book", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Book addBook(@RequestBody Book newBook) {
-//        System.out.println(newBook.toString());
-//        return bookRepository.save(newBook);
-//    }
+    /// ADD A NEW BOOK
+    /// TODO test this
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @PostMapping(value="/addBook", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Book addBook(@RequestBody Book newBook) {
+        System.out.println(newBook.toString());
+        return bookRepository.save(newBook);
+    }
 
 
 //    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
@@ -176,33 +100,33 @@ public class BookController {
 //        return recipeRepository.save(newRecipe);
 //    }
 
-//    // TODO test this
-//    // Modify title for an existing book - PUT request
-//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-//    @PutMapping(value="/updateBookName/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Book> updateBookName(@PathVariable Long id, @RequestBody String newName) {
-//        Book book = bookRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-//        book.setTitle(newName);
-//        Book updatedBook = bookRepository.save(book);
-//        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
-//    }
+    // TODO test this
+    // Modify title for an existing book - PUT request
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @PutMapping(value="/updateBookName/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Book> updateBookName(@PathVariable Long id, @RequestBody String newName) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        book.setTitle(newName);
+        Book updatedBook = bookRepository.save(book);
+        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+    }
 
 
-//    // Delete a book - DELETE request
-//    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
-//    @DeleteMapping("/deleteBook/{id}")
-//    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-//        Book book = bookRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-//
-//        // Remove associations
-//        book.setAuthor(null);
-//        bookRepository.save(book);  // Save the book without the associations
-//
-//        bookRepository.delete(book);  // Now you can delete the book
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    // Delete a book - DELETE request
+    @CrossOrigin(origins = "http://localhost:3000") // Replace with your React app's URL
+    @DeleteMapping("/deleteBook/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+
+        // Remove associations
+        book.setAuthor(null);
+        bookRepository.save(book);  // Save the book without the associations
+
+        bookRepository.delete(book);  // Now you can delete the book
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
 //

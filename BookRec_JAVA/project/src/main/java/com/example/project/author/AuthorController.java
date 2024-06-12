@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/// TODO CHANGE AUTHOR CONTROLLER TO MATCH THE PURPOSE OF APPLICATION
 @RestController
 @RequestMapping(path = "api/v1/authors")
 public class AuthorController {
@@ -20,17 +20,16 @@ public class AuthorController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @GetMapping(value = "/all-authors", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getAllAuthors", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Author> getAuthors() {
         return authorRepository.findAll();
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-//    @PostMapping(value = "/addAuthor", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Author> addAuthor(@RequestParam String name, @RequestParam String about) {
-//        Author author = new Author(name, about);
-//        Author savedAuthor = authorRepository.save(author);
-//        return new ResponseEntity<>(savedAuthor, HttpStatus.CREATED);
-//    }
-
+    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+    @PostMapping(value = "/addAuthor", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Author> addAuthor(@RequestParam String name, @RequestParam String about) {
+        Author author = new Author(name, about);
+        Author savedAuthor = authorRepository.save(author);
+        return new ResponseEntity<>(savedAuthor, HttpStatus.CREATED);
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.project.readingList;
 
 import com.example.project.authentication.user.User;
-import com.example.project.authentication.user.UserSession;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
 import com.example.project.exception.ResourceNotFoundException;
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.project.authentication.user.UserRepository;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/reading-lists")
+@RequestMapping("/api/reading-lists")
 @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
 public class ReadingListController {
 
@@ -31,33 +28,21 @@ public class ReadingListController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserSession userSession;
-
 
     // Tested with Postman (POST Request: http://localhost:8080/api/reading-lists/create)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PostMapping(value = "/new-list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReadingList> createReadingList(@RequestBody ReadingList readingList) {
-        // Retrieve the username from the UserSession
-        String username = UserSession.getInstance().getUsername();
+        // authorize the user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
 
-        // daca nu e logat, nu poate crea lista
-        if (username == null) {
-            return ResponseEntity.status(403).build(); // Forbidden
-        }
-
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found with username " + username);
-        }
+        User currentUser = userRepository.findByUsername(currentUsername);
 
         // if there is a list with the same currentUser and the same name, dont create it
         if (readingListRepository.findByUserAndName(currentUser, readingList.getName()) != null) {
             return ResponseEntity.status(409).build(); // Conflict
         }
-
         readingList.setUser(currentUser);
         ReadingList savedReadingList = readingListRepository.save(readingList);
         return ResponseEntity.ok(savedReadingList);
@@ -66,7 +51,7 @@ public class ReadingListController {
 
     // Tested with Postman (PUT Request: http://localhost:8080/api/reading-lists/add-book/1/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PutMapping(value = "/{readingListId}/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/add-book/{readingListId}/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReadingList> addBookToReadingList(@PathVariable Long readingListId, @PathVariable Long bookId) {
         ReadingList readingList = readingListRepository.findById(readingListId)
                 .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found with id " + readingListId));
@@ -74,19 +59,11 @@ public class ReadingListController {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
 
-        // use user data
-        String username = UserSession.getInstance().getUsername();
+        // authorize the user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
 
-        // daca nu e logat, nu merge
-        if (username == null) {
-            return ResponseEntity.status(403).build(); // Forbidden
-        }
-
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found with username " + username);
-        }
+        User currentUser = userRepository.findByUsername(currentUsername);
 
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
@@ -105,24 +82,16 @@ public class ReadingListController {
 
     // Tested with Postman (GET Request: http://localhost:8080/api/reading-lists/get/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @GetMapping(value = "list/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReadingList> getReadingList(@PathVariable Long id) {
         ReadingList readingList = readingListRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found with id " + id));
 
-        // use user
-        String username = UserSession.getInstance().getUsername();
+        // authorize the user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
 
-        // daca nu e logat, nu merge
-        if (username == null) {
-            return ResponseEntity.status(403).build(); // Forbidden
-        }
-
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found with username " + username);
-        }
+        User currentUser = userRepository.findByUsername(currentUsername);
 
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
@@ -133,52 +102,22 @@ public class ReadingListController {
 
     // Tested with Postman (DELETE Request: http://localhost:8080/api/reading-lists/remove/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @DeleteMapping(value = "/excluded/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "remove/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> removeReadingList(@PathVariable Long id) {
         ReadingList readingList = readingListRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("ReadingList not found with id " + id));
 
-        // use user
-        String username = UserSession.getInstance().getUsername();
+        // authorize the user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
 
-        // daca nu e logat, nu merge
-        if (username == null) {
-            return ResponseEntity.status(403).build(); // Forbidden
-        }
+        User currentUser = userRepository.findByUsername(currentUsername);
 
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        // verify if the currentUser is the owner of the readingList
         if (!readingList.getUser().equals(currentUser)) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
 
         readingListRepository.delete(readingList);
         return ResponseEntity.ok().build();
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @GetMapping(value = "/all-reading-lists", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReadingList> getAllReadingLists() {
-        // use user
-
-        String username = UserSession.getInstance().getUsername();
-
-        // daca nu e logat, nu merge
-        if (username == null) {
-            return null;
-        }
-
-        // Find the user by username
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        return readingListRepository.findByUser(currentUser);
     }
 }
