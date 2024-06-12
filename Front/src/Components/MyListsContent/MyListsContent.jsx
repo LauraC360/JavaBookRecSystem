@@ -13,6 +13,7 @@ const MyListsContent = () => {
     const [currentListId, setCurrentList] = useState(1);
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [newListName, setNewListName] = useState("");
 
 
     const handleList = (event) => {
@@ -54,6 +55,48 @@ const MyListsContent = () => {
         }
     }
 
+
+
+    const createList = async () => {
+        try{
+            console.log('creating list:', newListName);
+            const response = await fetch(`http://localhost:8082/api/v1/reading-lists/new-list`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newListName })
+            });
+            const data = await response.json();
+            console.log(data);
+
+            fetchLists();
+
+        }   catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+
+    const deleteList = async () => {
+        try{
+            const response = await fetch(`http://localhost:8082/api/v1/reading-lists/excluded/${currentListId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+            fetchLists();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+
     useEffect(() => {
         setLoading(true);
         fetchLists();
@@ -71,10 +114,16 @@ const MyListsContent = () => {
     return (
 
         <div className="my-list-container">
-            <MyListSpinner allLists={allLists} changeList={handleList} />
-        
+            <div className="my-list-header">
+                <MyListSpinner allLists={allLists} changeList={handleList} />
+                <input type="text" placeholder="New List Name..." className="new-list-input" value={newListName} 
+                    onChange={e => setNewListName(e.target.value)}   />
+                <button onClick={createList} className="create-list-button">Create </button>
+                <button onClick={deleteList} className="delete-list-button">Delete </button>
+            </div>
+
             <div className="my-cards-container">
-             {!loading && books &&  books.map(book => (<Cards key={book.id} book={book} />))}
+             {!loading && books &&  books.map(book => (<Cards key={book.id} book={book} listId={currentListId} />))}
              {!loading && books && books.length === 0 && <h1>No books in this list</h1>}
             </div>
         </div>

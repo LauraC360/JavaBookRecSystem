@@ -10,7 +10,7 @@
 }
 .historyButton{
     border:none;
-    background-color: #1BBC9B;
+    background-color: #bc861b;
     color:white;
     padding:10px;
     border-radius: 5px;
@@ -101,7 +101,7 @@
 }
 .button3Style{
     border: none;
-    background-color: #1BBC9B;
+    background-color: #bc861b;
     color: white;
     font-size: 0.80vw;
     padding: 5px 10px;
@@ -173,7 +173,7 @@
 .formStyleChores button{
 
     border:none;
-    background-color: #1BBC9B;
+    background-color: #bc861b;
     color:white;
     padding:10px;
     border-radius: 5px;
@@ -296,7 +296,7 @@
 }
 .addFromHistory{
     border:none;
-    background-color: #1BBC9B;
+    background-color: #bc861b;
     color:white;
     font-size: 1vw;
     padding:7px;
@@ -348,7 +348,7 @@
 }
 
 .buttonContainerConfirm >:first-child{
-    background-color: #1BBC9B;
+    background-color: #bc861b;
 }
 
 .buttonContainerConfirm >:first-child:hover{
@@ -365,7 +365,7 @@
 }
 .clearHistoryButtons > :first-child{
     border:none;
-        background-color: #1BBC9B;;
+        background-color: #bc861b;;
         color:white;
         padding:7px;
         border-radius: 5px;
@@ -498,7 +498,7 @@
     .formStyleChores button{
     
         border:none;
-        background-color: #1BBC9B;
+        background-color: #bc861b;
         color:white;
         padding:10px;
         border-radius: 5px;
@@ -560,7 +560,7 @@
     }
     .button3Style{
         border: none;
-        background-color: #1BBC9B;
+        background-color: #bc861b;
         color: white;
         font-size:2vw;
         padding: 5px 10px;
@@ -608,7 +608,7 @@
     .formStyleChores button{
     
         border:none;
-        background-color: #1BBC9B;
+        background-color: #bc861b;
         color:white;
         padding:10px;
         border-radius: 5px;
@@ -727,7 +727,7 @@
     
     .historyButton{
         border:none;
-        background-color: #1BBC9B;
+        background-color: #bc861b;
         color:white;
         padding:10px;
         border-radius: 5px;
@@ -741,7 +741,7 @@
     }
     .addFromHistory{
         border:none;
-        background-color: #1BBC9B;
+        background-color: #bc861b;
         color:white;
         font-size: 1vw;
         padding:7px;
@@ -795,7 +795,7 @@
     }
     
     .buttonContainerConfirm >:first-child{
-        background-color: #1BBC9B;
+        background-color: #bc861b;
     }
     
     .buttonContainerConfirm >:first-child:hover{
@@ -812,7 +812,7 @@
     }
     .clearHistoryButtons > :first-child{
         border:none;
-        background-color: #1BBC9B;;
+        background-color: #bc861b;;
         color:white;
         padding:7px;
         border-radius: 5px;

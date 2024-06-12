@@ -4,8 +4,10 @@ import "./Button.css";
 export function Button(props) 
 {
 
-    useEffect(() => {
-        if(props === 'Sign Out'){
+    const logout = () =>{
+        console.log('props:', props);
+        console.log('logging out');
+        if(props.text === 'Sign Out'){
             try{
             const response = fetch(`http://localhost:8082/api/v1/logout`,
                 {
@@ -18,18 +20,18 @@ export function Button(props)
             if(response.ok){
                 console.log('User has been logged out');
             }
-        } catch (error) {
-            console.log('Error:', error);
-        }  
+            } catch (error) {
+                console.log('Error:', error);
+            }  
 
         
         }
 
 
-    }, []);
+    };
 
 
     return (
-        <button>{props.text}</button>
+        <button onClick={logout} >{props.text}</button>
     );
 }

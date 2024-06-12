@@ -17,26 +17,37 @@ export default function Modal({ book, toggleModal, img, startRating}) {
     }
 
     const fetchLists = async () => {
-        // try{
-        // const response = await fetch(`http://localhost:8082/api/v1/reading-lists/get-all-reading-lists`);
-        // const data = await response.json();
-        // setAllLists(data);
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
-        return [{id:1, name: 'My List'}, {id:2, name: 'My Second List'}, {id:3, name: 'My Third List'}];
+        try{
+            const response = await fetch(`http://localhost:8082/api/v1/reading-lists/all-reading-lists`);
+            const data = await response.json();
+            console.log(data);
+            setAllLists(data);
+            setCurrentList(data[0].id);
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     useEffect(() => {
-        setAllLists(fetchLists());
+        console.log('book info: ', book);
+        console.log('current list id:', currentListId);
+        console.log('all lists:', allLists);
+        console.log('start rating:', rating);
+
+
+        fetchLists();
     }, []);
 
 
     const addToList = async () => {
+        // console.log('current list id:', currentListId);
         try{
-            const id = allLists.find(list => list.name === 'My List').id;
-            const response = await fetch(`http://localhost:8082/api/v1/reading-lists/add-book/${id}/${book.id}`, {
-                method: 'POST',
+            console.log('adding to list: ', currentListId);
+            console.log('book:', book);
+            console.log('book id:', book.id);
+            const response = await fetch(`http://localhost:8082/api/v1/reading-lists/${currentListId}/${book.id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -48,9 +59,7 @@ export default function Modal({ book, toggleModal, img, startRating}) {
         }
     }
 
-    //console.log(book.imageList);//its ok
-    //const imageSrc = (book.imageList && book.imageList.length > 0) ? book.imageList[0] : titleImage;
-    //console.log(book.instructionsList);
+
     
     return (
         <div className="modal">
@@ -63,7 +72,7 @@ export default function Modal({ book, toggleModal, img, startRating}) {
                 <div className="small-info-container">
                     <div className="small-info-left">
                         <h5>Author: </h5>
-                        <p>{book && book.author}</p>
+                        <p>{book && (book.author.name || book.author)}</p>
                     </div>
                     <div className="small-info-center">
                         <h5>Rating: </h5>
