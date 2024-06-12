@@ -2,6 +2,7 @@ package com.example.project.review;
 
 import com.example.project.authentication.user.User;
 import com.example.project.authentication.user.UserRepository;
+import com.example.project.authentication.user.UserSession;
 import com.example.project.book.Book;
 import com.example.project.book.BookRepository;
 import com.example.project.exception.ResourceNotFoundException;
@@ -30,32 +31,53 @@ public class ReviewController {
 
     // Tested with Postman (POST Request: http://localhost:8080/api/v1/reviews/add-review/1)
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @PostMapping(value = "/add-review/{bookId}/{rating}")
+    @PostMapping(value = "/{bookId}/{rating}")
     public ResponseEntity<Review> createReview(@PathVariable Long bookId, @PathVariable int rating) {
 
+        // use user
+        String username = UserSession.getInstance().getUsername();
 
-        User currentUser = userRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("User not found with id 2"));
+        // daca nu e logat, nu merge
+        if (username == null) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        // Find the user by username
+        User currentUser = userRepository.findByUsername(username);
 
         if (currentUser == null) {
             return ResponseEntity.status(401).body(null);
         }
 
         // Find the book by ID
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new RuntimeException("Book not found"));
 
+        // if the book is not found, return 404
+        if (book == null) {
+            return ResponseEntity.status(404).body(null);
+        }
 
-        Review review = new Review();
-        // Set the user and book for the review
+        // If there already is a review from this user
+        Review review = reviewRepository.findByUserAndBook(currentUser, book);
+        if (review != null) {
+            review.setRating(rating);
+            Review savedReview = reviewRepository.save(review);
+            // Return the saved review
+            return ResponseEntity.ok(savedReview);
+        }
+        else {
+            Review newReview = new Review();
+            // Set the user and book for the review
+            newReview.setRating(rating);
+            newReview.setUser(currentUser);
+            newReview.setBook(book);
 
-        review.setRating(rating);
-        review.setUser(currentUser);
-        review.setBook(book);
-
-        // Save the review
-        Review savedReview = reviewRepository.save(review);
-
-        // Return the saved review
-        return ResponseEntity.ok(savedReview);
+            // Save the review
+            Review savedReview = reviewRepository.save(newReview);
+            // Return the saved review
+            return ResponseEntity.ok(savedReview);
+        }
     }
 
 //

@@ -31,7 +31,7 @@ public class UserController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
+        user.setEnabled(false);
         userRepository.save(user);
 
         Authority authority = new Authority();
@@ -41,4 +41,23 @@ public class UserController {
 
         return "User registered successfully";
     }
+
+//    @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+//    @PostMapping("/register-admin")
+//    public String registerAdmin(@RequestBody User user) {
+//        if (userRepository.findByUsername(user.getUsername()) != null) {
+//            return "Username already exists";
+//        }
+//
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setEnabled(true);
+//        userRepository.save(user);
+//
+//        Authority authority = new Authority();
+//        authority.setUsername(user.getUsername());
+//        authority.setAuthority("ROLE_ADMIN");
+//        authorityRepository.save(authority);
+//
+//        return "Admin registered successfully";
+//    }
 }

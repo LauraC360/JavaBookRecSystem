@@ -20,7 +20,7 @@ public class AuthorController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
-    @GetMapping(value = "/getAllAuthors", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-authors", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Author> getAuthors() {
         return authorRepository.findAll();
     }
