@@ -8,6 +8,7 @@ import com.example.project.author.Author;
 import com.example.project.author.AuthorRepository;
 import com.example.project.author.AuthorService;
 import com.example.project.exception.ResourceNotFoundException;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

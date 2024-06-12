@@ -35,7 +35,6 @@ public class ReviewController {
     public ResponseEntity<Review> createReview(@PathVariable Long bookId, @PathVariable int rating) {
 
         // use user
-        // use user
         String username = UserSession.getInstance().getUsername();
 
         // daca nu e logat, nu merge
@@ -54,18 +53,31 @@ public class ReviewController {
         Book book = bookRepository.findById(bookId).orElseThrow(()
                 -> new RuntimeException("Book not found"));
 
-        Review review = new Review();
+        // if the book is not found, return 404
+        if (book == null) {
+            return ResponseEntity.status(404).body(null);
+        }
 
-        // Set the user and book for the review
-        review.setRating(rating);
-        review.setUser(currentUser);
-        review.setBook(book);
+        // If there already is a review from this user
+        Review review = reviewRepository.findByUserAndBook(currentUser, book);
+        if (review != null) {
+            review.setRating(rating);
+            Review savedReview = reviewRepository.save(review);
+            // Return the saved review
+            return ResponseEntity.ok(savedReview);
+        }
+        else {
+            Review newReview = new Review();
+            // Set the user and book for the review
+            newReview.setRating(rating);
+            newReview.setUser(currentUser);
+            newReview.setBook(book);
 
-        // Save the review
-        Review savedReview = reviewRepository.save(review);
-
-        // Return the saved review
-        return ResponseEntity.ok(savedReview);
+            // Save the review
+            Review savedReview = reviewRepository.save(newReview);
+            // Return the saved review
+            return ResponseEntity.ok(savedReview);
+        }
     }
 
 //

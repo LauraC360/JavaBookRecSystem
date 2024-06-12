@@ -32,6 +32,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "SELECT get_top_rated_books()", nativeQuery = true)
     String getMostPopularBooks();
 
+    @Query(value = "SELECT * FROM get_top_rated_books()", nativeQuery = true)
+    List<Book> findMostPopularBooks(Pageable pageable);
+
     @Query(value = "SELECT get_user_reading_list(?1)", nativeQuery = true)
     String getSomeBooksFromReadingList(int user_id);
+
+
+    List<Book> findAllById(List<Long> ids);
 }
