@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 export const Content = () => 
 {
-    const [email, setEmail] = useState('');
+    const [username, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const user={email, password}
-        console.log(user)
+        const user={username, password}
+        console.log(user)   
         fetch("http://localhost:8082/api/v1/public/v2/login", {
             method: 'POST',
             headers: {
@@ -26,7 +26,7 @@ export const Content = () =>
             if (response.ok) {
                 return response.json();
             } else {
-                throw new Error('Email or password is incorrect!')
+                throw new Error('username or password is incorrect!')
             }
         }).then(data => {
             localStorage.setItem('jwtToken', data.token);
@@ -40,18 +40,15 @@ export const Content = () =>
 
     return (
         <main className='sign-in-main'>
-            <div className="sign-in-bg-image"></div>
             <div className="component-1">
                 <img src="img/ico/Lock.png" alt="img" />
                 <form className='sign-in-form' onSubmit={handleSubmit}>
-                    <input type="email" name='email' placeholder="Email address" onChange={e => setEmail(e.target.value)} required/>
+                    <input type="username" name='username' placeholder="Username" onChange={e => setEmail(e.target.value)} required/>
                     <input type="password" name='password' placeholder="Password" onChange={e => setPassword(e.target.value)} required/>
                     <button type="submit">Sign In</button>
                 </form>
-                {errorMessage && <p className='error-message'>{errorMessage}</p>}
-                <p className='recover'>Can’t remember your password? <a href="#">Recover It!</a></p>
                 <hr />
-                <p className='acc-create'>Don’t have an account? <a href="/#/signup">Sign Up!</a></p>
+                <p className='acc-create'> <a href="/#/signup">Sign Up</a></p>
             </div>
         </main>
     )

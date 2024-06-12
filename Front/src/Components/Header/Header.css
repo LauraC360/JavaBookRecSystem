@@ -16,16 +16,19 @@ nav
     width: 100%;
     align-items: center;
     height: 80px;
+    z-index: 1000;
 }
 
 nav img
 {
+    width: 50%;
     margin-left: 100px;
+    margin-top: 20px
 }
 
 nav ul
 {
-    margin-top: 5px ;
+    margin-top: 30px ;
     list-style-type: none;
     display: flex;
     flex-direction: row;

@@ -15,7 +15,7 @@ export const Header = () => {
 
     return (
         <nav>
-            <a href="#"><img src='src/Components/Header/logo.jpg' alt="logo" /></a>
+            <a href="#"><img src='img/ico/logo.png' alt="logo" /></a>
             <ul>
                 <li className="homeChores"><Link to="/">Home</Link></li>
                 <li className="aboutChores"><Link to="/recommendations">Recommandations</Link></li>

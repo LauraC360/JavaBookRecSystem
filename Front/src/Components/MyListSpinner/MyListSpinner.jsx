@@ -1,11 +1,9 @@
 
 
-
-
 const MyListSpinner = ({ allLists, changeList }) => {
     return (
-      <select onChange={changeList}>
-        {allLists.map((list) => (
+      <select className="my-list-spinner" onChange={changeList}>
+        {allLists && allLists[0] && allLists.map((list) => (
           <option key={list.id} value={list.id}>
             {list.name}
           </option>

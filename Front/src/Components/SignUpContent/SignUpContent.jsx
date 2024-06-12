@@ -53,15 +53,13 @@ export const Content = () => {
             <div className="component-2">
                 <img src="img/ico/Lock.png" alt="img" />
                 <form className='sign-up-form' onSubmit={handleSubmit}>
-                    <input type="email" name='email' placeholder="Email address" onChange={e => setEmail(e.target.value)} required/>
                     <input type="text" name='username' placeholder="Username" onChange={e => setUsername(e.target.value)} required/>
                     <input type="password" name='password' placeholder="Password" onChange={e => setPassword(e.target.value)} required/>
                     <input type="password" name='confirmPassword' placeholder="Confirm password" onChange={e => setAgainPassword(e.target.value)} required/>
                     <button type="submit">Sign Up</button>
                 </form>
-                {errorMessage && <p className='error-message'>{errorMessage}</p>}
                 <hr />
-                <p className='acc-create-2'>Already have an account? <a href="/#/signin">Sign In!</a></p>
+                <p className='acc-create-2'><a href="/#/signin">Sign In</a></p>
             </div>
         </main>
     )
