@@ -11,6 +11,4 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Review findByUserAndBook(User user, Book book);
     List<Review> findByUserId(Long userId);
-
-    List<Long> findAllUserIds();
 }

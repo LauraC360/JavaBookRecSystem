@@ -32,7 +32,8 @@ public class RecommendationService {
     private UserRepository userRepository;
 
     private static final int NUM_RECOMMENDATIONS = 5;
-    private static final int POPULAR_BOOKS_LIMIT = 10;
+    private static final int POPULAR_BOOKS_LIMIT = 30;
+
 
     public List<Book> recommendBooks(Long userId) {
         Map<Long, Integer> targetUserRatings = getUserRatings(userId);
@@ -72,7 +73,11 @@ public class RecommendationService {
 
         if (recommendations.size() < NUM_RECOMMENDATIONS) {
 
-            List<Book> popularBooks = bookRepository.findMostPopularBooks(PageRequest.of(0, POPULAR_BOOKS_LIMIT));
+            PageRequest topN = PageRequest.of(0, POPULAR_BOOKS_LIMIT);
+            List<Book> popularBooks = bookRepository.findTopNByOrderByNumRatingsDesc(topN).getContent();
+
+            System.out.println("---------------------   popularBooks: " + popularBooks.size());
+            System.out.println("---------------------   recommendations size: " + recommendations.size());
             for (Book book : popularBooks) {
                 if (!recommendedBookIds.contains(book.getId())) {
                     recommendations.add(book);
