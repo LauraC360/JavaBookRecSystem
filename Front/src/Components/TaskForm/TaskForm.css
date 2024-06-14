@@ -1,0 +1,121 @@
+.app_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.app_header > form {
+    width: 40%;
+}
+
+.task_input {
+    font-size: 20px; /* Ensure text is visible */
+    font-weight: 500;
+    background: #f9f9f9;
+    color: #000 !important; /* Ensure black text color and make it important */
+    border: 1px solid #dfe3e6;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    width: 100%; /* Adjust width as needed */
+}
+
+
+.task_input::placeholder {
+    color: #686868; /* Grey placeholder color */
+}
+
+.task_form_bottom_line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task_form_bottom_line > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+}
+
+.task_status {
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #999;
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
+    padding: 0 5px;
+}
+
+.task_submit {
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #6457f9;
+    color: #fff;
+    border-radius: 5px;
+    height: 40px;
+    padding: 3px 13px;
+    margin-left: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.task_form {
+    position: relative;
+}
+
+.search_results_container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.search_results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.search_results li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search_results li:hover {
+    background: #f0f0f0;
+}
+
+.close_button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin: 5px;
+}
+
+.error_message {
+    color: red;
+    margin-top: 10px;
+}
+
+.loading_message {
+    color: #000;
+    font-size: 18px;
+    margin-top: 15px;
+}

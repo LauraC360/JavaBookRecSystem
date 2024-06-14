@@ -1,0 +1,59 @@
+/* CSS */
+.sign-up-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image:  url('../../../public/img/login/bookSignInBG.avif');
+    background-size: cover;
+    background-position: center;
+}
+
+
+.component-2 {
+    width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.component-2 img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.sign-up-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.sign-up-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sign-up-form button:hover {
+    background-color: #0056b3;
+}
+
+.acc-create-2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.acc-create-2 a {
+    color: #007BFF;
+}
+
+.acc-create-2 a:hover {
+    color: #0056b3;
+}
